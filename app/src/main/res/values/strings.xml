@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">balloon-game-client</string>
+    <string name="room_icon_content_description">Room icon</string>
 </resources>
