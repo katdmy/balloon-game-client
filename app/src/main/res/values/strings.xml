@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">balloon-game-client</string>
     <string name="room_icon_content_description">Room icon</string>
+    <string name="dialog_login_hint_enter_name">ENTER NAME</string>
+    <string name="dialog_login_join_game">Join game</string>
+    <string name="dialog_background_content_description">Background image for dialog</string>
 </resources>
