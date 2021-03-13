@@ -7,4 +7,5 @@
     <string name="room_create_play_room">Create play room</string>
     <string name="dialog_create_playroom_hint_name">ENTER PLAYROOM NAME</string>
     <string name="dialog_create_playroom_create">Create game</string>
+    <string name="play_game_btn">Play</string>
 </resources>

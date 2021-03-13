@@ -17,7 +17,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class QuestionDialogFragment : DialogFragment() {
     private var _binding: FragmentQuestionDialogBinding? = null
     private val binding get() = _binding!!
+
     private val questionViewModel: QuestionViewModel by viewModel()
+
     private var rightAnswer: Int? = null
     private var chance: Int? = null
 

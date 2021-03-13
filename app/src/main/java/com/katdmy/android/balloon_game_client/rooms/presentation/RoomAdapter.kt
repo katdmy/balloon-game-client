@@ -3,14 +3,15 @@ package com.katdmy.android.balloon_game_client.rooms.presentation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.katdmy.android.balloon_game_client.R
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
 
 class RoomAdapter(
-    private val roomOnClickListener: (RoomsPlayers) -> Unit
+    private val roomOnClickListener: (RoomsPlayers) -> Unit,
+    private val playOnClickListener: () -> Unit
 ) : RecyclerView.Adapter<ListItemViewHolder>() {
 
     private var roomsPlayers = listOf<RoomsPlayers>()
@@ -41,20 +42,19 @@ class RoomAdapter(
     override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
         when (holder) {
             is RoomViewHolder -> {
-                holder.onBind(roomsPlayers[position])
+                val room = roomsPlayers[position]
+                holder.onBind(room)
                 holder.itemView.setOnClickListener {
-                    roomOnClickListener(
-                        roomsPlayers[position]
-                    )
+                    holder.showPlayButton(playOnClickListener)
+
+                    roomOnClickListener(room)
+                }
+                roomsPlayers.find { it.roomId == room.id }?.also { _ ->
+                    holder.showPlayButton { playOnClickListener }
                 }
             }
             is PlayerViewHolder -> {
                 holder.onBind(roomsPlayers[position])
-                holder.itemView.setOnClickListener {
-                    roomOnClickListener(
-                        roomsPlayers[position]
-                    )
-                }
             }
         }
     }
@@ -72,16 +72,23 @@ abstract class ListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(item
 private class RoomViewHolder(itemView: View) : ListItemViewHolder(itemView) {
 
     private val roomName: TextView = itemView.findViewById(R.id.tv_room_name)
+    private val playButton: Button = itemView.findViewById(R.id.bt_play)
 
     fun onBind(room: RoomsPlayers) {
         roomName.text = room.name
+    }
+
+    fun showPlayButton(playOnClickListener: () -> Unit) {
+        playButton.visibility = View.VISIBLE
+        playButton.setOnClickListener {
+            playOnClickListener()
+        }
     }
 }
 
 private class PlayerViewHolder(itemView: View) : ListItemViewHolder(itemView) {
 
     private val playerName: TextView = itemView.findViewById(R.id.tv_player_name)
-    private val playerAvatar: ImageView = itemView.findViewById(R.id.iv_player_avatar)
 
     fun onBind(player: RoomsPlayers) {
         playerName.text = player.name
