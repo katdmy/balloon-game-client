@@ -30,9 +30,19 @@ class RoomViewModel(
     private lateinit var userId: String
     private lateinit var currentRoomId: String
 
-    /*init {
-
-    }*/
+//    init {
+//        viewModelScope.launch {
+//            startRepo.subscribeRoomEvent().collect { entity ->
+//                _startGameEvent.value = StartGameModel(
+//                    duration = entity.duration,
+//                    chance = entity.chance,
+//                    questionNumber = entity.questionNumber,
+//                    players = _mutableRoomResponse.value!!,
+//                    roomId = entity.roomId
+//                )
+//            }
+//        }
+//    }
 
     fun getRooms() {
         viewModelScope.launch {
