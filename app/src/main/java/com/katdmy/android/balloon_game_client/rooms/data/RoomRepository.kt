@@ -25,8 +25,9 @@ class RoomRepository(
     override suspend fun confirmGame(roomId: String) =
         roomApi.confirmGame(roomId)
 
-    override suspend fun getData(): List<RoomsPlayers> =
-        modelsMapper.fromApiToLocal(roomApi.getList())
+    override suspend fun getData(): List<RoomsPlayers> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun createRoom(roomId: String, userId: String): RoomEntity {
         TODO("Not yet implemented")
