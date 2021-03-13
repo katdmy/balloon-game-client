@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="CustomSnivel" parent="">
+        <item name="snivelX">0dp</item>
+        <item name="snivelY">0dp</item>
+    </style>
+
     <style name="MyButtonTheme">
         <item name="android:background">@drawable/button_bg</item>
         <item name="android:paddingTop">4dp</item>
