@@ -2,36 +2,29 @@ package com.katdmy.android.balloon_game_client.presetation.di.game
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.katdmy.android.balloon_game_client.databinding.FragmentGameBinding
 import com.katdmy.android.balloon_game_client.presetation.QuestionDialogFragment
-import com.katdmy.android.balloon_game_client.presetation.QuestionViewModel
-import com.katdmy.android.balloon_game_client.rooms.presentation.ViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class GameFragment : Fragment() {
     private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
-    //private val questionViewModel: QuestionViewModel by viewModel()
 
-    private val viewModel: GameViewModel by activityViewModels {
-        ViewModelFactory(
-            requireActivity(),
-            arguments
+    private val viewModel: GameViewModel by viewModel(parameters = {
+        parametersOf(
+            arguments?.getParcelable(
+                START_GAME_DATA
+            )
         )
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,26 +33,41 @@ class GameFragment : Fragment() {
     ): View? {
         _binding = FragmentGameBinding.inflate(inflater, container, false)
 
-        viewModel.gameViewModel.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireContext(), "$it", Toast.LENGTH_LONG).show()
-        })
+        setUpRecycler()
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*questionViewModel.downloadQuestionModel(1)
 
-        questionViewModel.timer.observe(
-            viewLifecycleOwner,
-            {
-                binding.progressBar.progress = it.toInt()
-                }
-        )*/
         val questionDialogFragment = QuestionDialogFragment.newInstance(1, 30)
         fragmentManager?.let { questionDialogFragment.show(it, "questionDialog") }
 
+        viewModel.timer.observe(
+            viewLifecycleOwner, Observer {
+                binding.progressBar.progress = it.toInt()
+            }
+        )
+    }
+
+    private fun setUpRecycler() {
+        binding.run {
+            vGamers.apply {
+                layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
+                val gamerAdapter = GamersAdapter()
+
+                viewModel.players.observe(
+                    viewLifecycleOwner,
+                    Observer { players -> gamerAdapter.setPlayers(players) })
+
+                adapter = gamerAdapter
+            }
+        }
     }
 
 

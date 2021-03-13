@@ -5,8 +5,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class StartGameModel(
-    val duration: Int,
+    val duration: Long,
     val chance: Int,
     val questionNumber: Int,
-    val participantIds: List<String>
+    val players: List<RoomsPlayers>,
+    val roomId: String
 ) : Parcelable

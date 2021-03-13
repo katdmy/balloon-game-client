@@ -52,13 +52,4 @@ class QuestionModelRepository {
         )
         return listQuestionModel[numberQuestion]
     }
-
-    fun timer(timeMs: Long): Flow<Long> = flow {
-
-        val time = timeMs / 1000
-        for (i in time downTo 0) {
-            delay(1000)
-            emit(((i.toDouble() / time) * 100).toLong())
-        }
-    }
 }

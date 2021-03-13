@@ -11,12 +11,13 @@ class StartFakeRepository() : IStartGameRepository {
             delay(2000L)
             emit(
                 StatusGameEntity.StartGameEntity(
-                    duration = 100,
+                    duration = 50000,
                     chance = 40,
                     questionNumber = 4,
                     participantIds = listOf(
                         "123", "122", "321"
-                    )
+                    ),
+                    roomId = "1"
                 )
             )
         }

@@ -5,11 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.katdmy.android.balloon_game_client.common.retrofit.RetrofitClient.roomApi
 import com.katdmy.android.balloon_game_client.domain.repository.game.IStartGameRepository
 import com.katdmy.android.balloon_game_client.rooms.data.RoomRepository
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
-import kotlinx.coroutines.async
 import com.katdmy.android.balloon_game_client.rooms.domain.models.StartGameModel
 import com.katdmy.android.balloon_game_client.utils.SingleLiveEvent
 import kotlinx.coroutines.flow.collect
@@ -32,12 +30,13 @@ class RoomViewModel(
 
     init {
         viewModelScope.launch {
-            startRepo.subscribeRoomEvent().collect {
+            startRepo.subscribeRoomEvent().collect { entity ->
                 _startGameEvent.value = StartGameModel(
-                    duration = it.duration,
-                    chance = it.chance,
-                    questionNumber = it.questionNumber,
-                    participantIds = it.participantIds
+                    duration = entity.duration,
+                    chance = entity.chance,
+                    questionNumber = entity.questionNumber,
+                    players = _mutableRoomResponse.value!!,
+                    roomId = entity.roomId
                 )
             }
         }
