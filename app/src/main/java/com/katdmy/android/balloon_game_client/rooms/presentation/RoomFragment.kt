@@ -1,14 +1,17 @@
 package com.katdmy.android.balloon_game_client.rooms.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.katdmy.android.balloon_game_client.R
+import com.katdmy.android.balloon_game_client.presetation.di.game.GameFragment
+import com.katdmy.android.balloon_game_client.presetation.di.game.GameFragment.Companion.START_GAME_DATA
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
 
 class RoomFragment : Fragment() {
@@ -37,7 +40,19 @@ class RoomFragment : Fragment() {
         setUpClickListener()
 
         roomViewModel.getData()
-        roomViewModel.roomResponse.observe(viewLifecycleOwner, { data -> adapter.setData(data) } )
+        roomViewModel.roomResponse.observe(viewLifecycleOwner, { data -> adapter.setData(data) })
+
+        roomViewModel.startGameEvent.observe(viewLifecycleOwner, Observer {
+            val gameFragment =
+                GameFragment()
+            val bundle = Bundle()
+            bundle.putParcelable(START_GAME_DATA, it)
+            gameFragment.arguments = bundle
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.activity_main, gameFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        })
     }
 
 
