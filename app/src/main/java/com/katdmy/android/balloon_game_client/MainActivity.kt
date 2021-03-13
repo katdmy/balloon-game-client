@@ -2,8 +2,10 @@ package com.katdmy.android.balloon_game_client
 
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.katdmy.android.balloon_game_client.presetation.QuestionDialogFragment
 import com.katdmy.android.balloon_game_client.utils.CustomSnivel
 import com.sdsmdg.harjot.vectormaster.VectorMasterView
 
@@ -28,6 +30,11 @@ class MainActivity : AppCompatActivity() {
             } else {
                 snivel.clearSnivel()
             }
+        }
+
+        val textView: TextView = findViewById(R.id.textView)
+        textView.setOnClickListener {
+            QuestionDialogFragment().show(supportFragmentManager, "questionDialog")
         }
     }
 }
