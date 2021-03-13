@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.katdmy.android.balloon_game_client.R
 import com.katdmy.android.balloon_game_client.presetation.di.game.GameFragment
 import com.katdmy.android.balloon_game_client.presetation.di.game.GameFragment.Companion.START_GAME_DATA
@@ -20,6 +21,7 @@ import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
 
 class RoomFragment : Fragment(R.layout.room_fragment) {
 
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: RoomAdapter
     private lateinit var dialogBackground: ImageView
@@ -45,6 +47,7 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
 
 
     private fun initViews(view: View) {
+        swipeRefreshLayout = view.findViewById(R.id.swipe_container)
         recycler = view.findViewById(R.id.rooms_list)
         dialogBackground = view.findViewById(R.id.iv_dialog_background)
         playerName = view.findViewById(R.id.tv_player_name)
@@ -78,7 +81,12 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
         setUpClickListeners()
 
         roomViewModel.getRooms()
-        roomViewModel.roomResponse.observe(viewLifecycleOwner, { data -> adapter.setData(data) })
+        roomViewModel.roomResponse.observe(viewLifecycleOwner, { data ->
+            run {
+                adapter.setData(data)
+                swipeRefreshLayout.isRefreshing = false
+            }
+        })
 
         roomViewModel.startGameEvent.observe(viewLifecycleOwner, Observer {
             val gameFragment =
@@ -95,7 +103,10 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
 
     private fun setUpAdapter() {
         recycler.layoutManager = LinearLayoutManager(activity)
-        adapter = RoomAdapter { room: RoomsPlayers -> roomClickListener(room) }
+        adapter = RoomAdapter(
+            { room: RoomsPlayers -> roomClickListener(room) },
+            { playClickListener() }
+        )
         recycler.adapter = adapter
 
     }
@@ -106,7 +117,6 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
 
             val dialog = AlertDialog.Builder(requireContext())
                 .setView(dialogView)
-                .setCancelable(false)
                 .create()
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.show()
@@ -119,13 +129,19 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
                 dialog.dismiss()
             }
         }
+        swipeRefreshLayout.setOnRefreshListener {
+            roomViewModel.getRooms()
+        }
     }
 
 
     //creating method to make it look simpler
     private fun roomClickListener(room: RoomsPlayers) {
-        //roomClickListener.launchGame(room)
-        val roomId = if (room.isRoom) room.id else room.roomOwnerId
-        Toast.makeText(requireContext(), "Room $roomId is pressed.", Toast.LENGTH_SHORT).show()
+        val roomId = if (room.isRoom) room.id else room.roomId
+        roomViewModel.joinRoom(roomId)
+    }
+
+    private fun playClickListener() {
+        roomViewModel.playGame()
     }
 }
