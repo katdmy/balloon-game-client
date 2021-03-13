@@ -40,10 +40,6 @@ class MainActivity : AppCompatActivity(), RoomFragment.RoomOnClickListener {
             }
         }
 
-        val textView: TextView = findViewById(R.id.textView)
-        textView.setOnClickListener {
-            QuestionDialogFragment().show(supportFragmentManager, "questionDialog")
-        }
     }
 
     override fun launchGame(room: RoomsPlayers) {
