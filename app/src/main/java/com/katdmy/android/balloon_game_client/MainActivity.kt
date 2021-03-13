@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), RoomFragment.RoomOnClickListener {
 
         val animatedPeppe = findViewById<ImageView>(R.id.vPeppe)
         supportFragmentManager.beginTransaction()
-            .add(R.id.activity_main, roomFragment)
+            .replace(R.id.activity_main, roomFragment)
             .commit()
 
         val snivel = findViewById<CustomSnivel>(R.id.vSnivel)

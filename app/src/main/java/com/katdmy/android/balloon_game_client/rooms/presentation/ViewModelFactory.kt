@@ -6,13 +6,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.katdmy.android.balloon_game_client.rooms.domain.models.ModelsMapper
 import com.katdmy.android.balloon_game_client.common.retrofit.RetrofitClient.roomApi
+import com.katdmy.android.balloon_game_client.domain.repository.game.StartFakeRepository
+import com.katdmy.android.balloon_game_client.presetation.di.game.GameFragment.Companion.START_GAME_DATA
+import com.katdmy.android.balloon_game_client.presetation.di.game.GameViewModel
 import com.katdmy.android.balloon_game_client.rooms.data.RoomRepository
+import com.katdmy.android.balloon_game_client.rooms.domain.models.ModelsMapper
 
 class ViewModelFactory(
     private val activity: FragmentActivity,
-    defaultArgs: Bundle? = null
+    private val defaultArgs: Bundle? = null
 ) : AbstractSavedStateViewModelFactory(activity, defaultArgs) {
 
     @Suppress("UNCHECKED_CAST")
@@ -26,12 +29,19 @@ class ViewModelFactory(
             val sharedPreferences =
                 applicationContext.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
             RoomViewModel(
-                handle,
-                RoomRepository(
+                startRepo = StartFakeRepository(),
+                handle = handle,
+                repo = RoomRepository(
                     roomApi,
                     ModelsMapper()
                 ),
-                sharedPreferences
+                sharedPreferences = sharedPreferences
+            )
+        }
+        GameViewModel::class.java -> {
+            GameViewModel(
+                model = defaultArgs?.getParcelable(START_GAME_DATA)!!,
+                handle = handle
             )
         }
         else -> throw IllegalArgumentException("$modelClass is not registered ViewModel")
