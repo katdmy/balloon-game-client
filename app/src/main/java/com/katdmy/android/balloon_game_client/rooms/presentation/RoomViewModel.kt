@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class RoomViewModel(
     private val handle: SavedStateHandle,
     private val repo: RoomRepository,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
     private val startRepo: IStartGameRepository
 ) : ViewModel() {
 
