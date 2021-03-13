@@ -6,28 +6,28 @@
     android:background="@drawable/dialog_bg">
 
     <EditText
-        android:id="@+id/et_login_name"
+        android:id="@+id/et_playroom_name"
         android:layout_width="288dp"
         android:layout_height="48dp"
         android:layout_marginTop="55dp"
         android:background="@drawable/dialog_edittext_bg"
         android:gravity="center"
-        android:hint="@string/dialog_login_hint_enter_name"
+        android:hint="@string/dialog_create_playroom_hint_name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/bt_login"
+        android:id="@+id/bt_create_game"
         android:layout_width="170dp"
         android:layout_height="48dp"
         android:layout_marginTop="63dp"
         android:layout_marginBottom="42dp"
-        android:text="@string/dialog_login_join_game"
+        android:text="@string/dialog_create_playroom_create"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_login_name" />
+        app:layout_constraintTop_toBottomOf="@id/et_playroom_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

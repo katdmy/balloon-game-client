@@ -12,6 +12,16 @@ class RoomRepository(
     private val modelsMapper: ModelsMapper
 ) : IRoomRepository {
 
-    override suspend fun getData(): List<RoomsPlayers> =
-        modelsMapper.fromApiToLocal(roomApi.getList())
+    override suspend fun createUser(username: String): String =
+        roomApi.createUser("username\": \"$username")
+
+    override suspend fun getRooms(): List<RoomsPlayers> =
+        modelsMapper.fromApiToLocal(roomApi.getRooms())
+
+    override suspend fun createPlayroom(playroomName: String): String =
+        roomApi.createPlayroom("\"name\" $playroomName")
+
+    override suspend fun confirmGame(roomId: String) =
+        roomApi.confirmGame(roomId)
+
 }

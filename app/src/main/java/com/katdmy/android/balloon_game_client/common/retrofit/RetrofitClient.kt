@@ -11,14 +11,14 @@ import retrofit2.create
 
 object RetrofitClient {
 
-    private const val MainServer = "http://143.198.226.5/room/"
+    private const val MainServer = "http://143.198.226.5/"
 
     private val json = Json {
         ignoreUnknownKeys = true
     }
 
     private val client = OkHttpClient().newBuilder()
-        //.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 
     @Suppress("EXPERIMENTAL_API_USAGE")
