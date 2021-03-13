@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import com.katdmy.android.balloon_game_client.R
+import com.katdmy.android.balloon_game_client.presetation.di.game.GameFragment
 
 class MainActivity : AppCompatActivity() {
     private val gameFragment = GameFragment()

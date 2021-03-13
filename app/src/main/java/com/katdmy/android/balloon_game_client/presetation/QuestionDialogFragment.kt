@@ -1,5 +1,7 @@
 package com.katdmy.android.balloon_game_client.presetation
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -42,6 +44,7 @@ class QuestionDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentQuestionDialogBinding.inflate(inflater, container, false)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
 
 

@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.katdmy.android.balloon_game_client.databinding.FragmentGameBinding
+import com.katdmy.android.balloon_game_client.presetation.QuestionDialogFragment
+import com.katdmy.android.balloon_game_client.presetation.QuestionViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.katdmy.android.balloon_game_client.rooms.presentation.ViewModelFactory
 
