@@ -22,7 +22,6 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
 
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: RoomAdapter
-    lateinit var roomClickListener: RoomOnClickListener
     private lateinit var dialogBackground: ImageView
     private lateinit var playerName: TextView
     private lateinit var createPlayroom: Button
@@ -102,8 +101,6 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
     }
 
     private fun setUpClickListeners() {
-        roomClickListener = context as RoomOnClickListener
-
         createPlayroom.setOnClickListener {
             val dialogView = layoutInflater.inflate(R.layout.dialog_create_playroom, null)
 
@@ -130,9 +127,5 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
         //roomClickListener.launchGame(room)
         val roomId = if (room.isRoom) room.id else room.roomOwnerId
         Toast.makeText(requireContext(), "Room $roomId is pressed.", Toast.LENGTH_SHORT).show()
-    }
-
-    interface RoomOnClickListener {
-        fun launchGame(room: RoomsPlayers)
     }
 }

@@ -6,6 +6,7 @@ import com.katdmy.android.balloon_game_client.rooms.data.models.RoomResponse
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
 import com.katdmy.android.balloon_game_client.common.retrofit.RoomApi
 import com.katdmy.android.balloon_game_client.domain.repository.entity.RoomEntity
+import com.katdmy.android.balloon_game_client.rooms.data.models.UserCreateRequest
 import com.katdmy.android.balloon_game_client.rooms.domain.IRoomRepository
 
 class RoomRepository(
@@ -14,7 +15,7 @@ class RoomRepository(
 ) : IRoomRepository {
 
     override suspend fun createUser(username: String): String =
-        roomApi.createUser("username\": \"$username")
+        roomApi.createUser(UserCreateRequest(username)).id
 
     override suspend fun getRooms(): List<RoomsPlayers> =
         modelsMapper.fromApiToLocal(roomApi.getRooms())

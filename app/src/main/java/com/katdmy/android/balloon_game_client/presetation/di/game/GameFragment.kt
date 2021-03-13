@@ -57,8 +57,8 @@ class GameFragment : Fragment() {
                 binding.progressBar.progress = it.toInt()
                 }
         )*/
-        val questionDialogFragment = QuestionDialogFragment.newInstance(1, 30)
-        fragmentManager?.let { questionDialogFragment.show(it, "questionDialog") }
+        //val questionDialogFragment = QuestionDialogFragment.newInstance(1, 30)
+        //fragmentManager?.let { questionDialogFragment.show(it, "questionDialog") }
 
     }
 

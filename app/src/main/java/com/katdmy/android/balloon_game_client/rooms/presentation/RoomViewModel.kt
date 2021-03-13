@@ -30,7 +30,7 @@ class RoomViewModel(
     val startGameEvent
         get() = _startGameEvent
 
-    init {
+    /*init {
         viewModelScope.launch {
             startRepo.subscribeRoomEvent().collect {
                 _startGameEvent.value = StartGameModel(
@@ -41,7 +41,7 @@ class RoomViewModel(
                 )
             }
         }
-    }
+    }*/
 
     fun getRooms() {
         viewModelScope.launch {
