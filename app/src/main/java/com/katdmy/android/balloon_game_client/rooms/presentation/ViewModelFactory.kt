@@ -1,5 +1,6 @@
 package com.katdmy.android.balloon_game_client.rooms.presentation
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
@@ -10,7 +11,7 @@ import com.katdmy.android.balloon_game_client.common.retrofit.RetrofitClient.roo
 import com.katdmy.android.balloon_game_client.rooms.data.RoomRepository
 
 class ViewModelFactory(
-    activity: FragmentActivity,
+    private val activity: FragmentActivity,
     defaultArgs: Bundle? = null
 ) : AbstractSavedStateViewModelFactory(activity, defaultArgs) {
 
@@ -21,12 +22,16 @@ class ViewModelFactory(
         handle: SavedStateHandle
     ): T = when (modelClass) {
         RoomViewModel::class.java -> {
+            val applicationContext = activity.applicationContext
+            val sharedPreferences =
+                applicationContext.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
             RoomViewModel(
                 handle,
                 RoomRepository(
                     roomApi,
                     ModelsMapper()
-                )
+                ),
+                sharedPreferences
             )
         }
         else -> throw IllegalArgumentException("$modelClass is not registered ViewModel")
