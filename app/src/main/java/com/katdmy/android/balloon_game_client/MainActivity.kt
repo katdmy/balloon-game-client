@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setTheme(R.style.Theme_Balloongameclient)
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.activity_main, roomFragment)

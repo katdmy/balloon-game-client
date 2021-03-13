@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity() {
     private val gameFragment = GameFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {

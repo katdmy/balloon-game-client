@@ -2,7 +2,6 @@ package com.katdmy.android.balloon_game_client.presetation.di.game
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.katdmy.android.balloon_game_client.databinding.FragmentGameBinding
-import com.katdmy.android.balloon_game_client.presetation.QuestionDialogFragment
-import com.katdmy.android.balloon_game_client.presetation.QuestionViewModel
-import com.katdmy.android.balloon_game_client.presetation.QuestionDialogFragment
-import com.katdmy.android.balloon_game_client.presetation.QuestionViewModel
 import com.katdmy.android.balloon_game_client.rooms.presentation.ViewModelFactory
 
 class GameFragment : Fragment() {
