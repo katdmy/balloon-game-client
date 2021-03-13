@@ -4,4 +4,7 @@
     <string name="dialog_login_hint_enter_name">ENTER NAME</string>
     <string name="dialog_login_join_game">Join game</string>
     <string name="dialog_background_content_description">Background image for dialog</string>
+    <string name="room_create_play_room">Create play room</string>
+    <string name="dialog_create_playroom_hint_name">ENTER PLAYROOM NAME</string>
+    <string name="dialog_create_playroom_create">Create game</string>
 </resources>

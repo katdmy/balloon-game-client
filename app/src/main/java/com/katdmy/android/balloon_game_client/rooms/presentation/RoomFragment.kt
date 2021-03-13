@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,8 +22,9 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
 
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: RoomAdapter
-    lateinit var roomClickListener: RoomOnClickListener
     private lateinit var dialogBackground: ImageView
+    private lateinit var playerName: TextView
+    private lateinit var createPlayroom: Button
     private val roomViewModel: RoomViewModel by activityViewModels {
         ViewModelFactory(
             requireActivity()
@@ -48,6 +47,8 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
     private fun initViews(view: View) {
         recycler = view.findViewById(R.id.rooms_list)
         dialogBackground = view.findViewById(R.id.iv_dialog_background)
+        playerName = view.findViewById(R.id.tv_player_name)
+        createPlayroom = view.findViewById(R.id.bt_create_playroom)
     }
 
     private fun showLoginDialog() {
@@ -65,21 +66,18 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString()
             roomViewModel.login(username)
-            hideDialog()
             showRoomsPlayers(username)
             dialog.dismiss()
         }
     }
 
-    private fun hideDialog() {
-        dialogBackground.visibility = View.GONE
-    }
-
     private fun showRoomsPlayers(username: String) {
+        dialogBackground.visibility = View.GONE
+        playerName.text = username
         setUpAdapter()
-        setUpClickListener()
+        setUpClickListeners()
 
-        roomViewModel.getData()
+        roomViewModel.getRooms()
         roomViewModel.roomResponse.observe(viewLifecycleOwner, { data -> adapter.setData(data) })
 
         roomViewModel.startGameEvent.observe(viewLifecycleOwner, Observer {
@@ -99,20 +97,35 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
         recycler.layoutManager = LinearLayoutManager(activity)
         adapter = RoomAdapter { room: RoomsPlayers -> roomClickListener(room) }
         recycler.adapter = adapter
+
     }
 
-    private fun setUpClickListener() {
-        roomClickListener = context as RoomOnClickListener
+    private fun setUpClickListeners() {
+        createPlayroom.setOnClickListener {
+            val dialogView = layoutInflater.inflate(R.layout.dialog_create_playroom, null)
+
+            val dialog = AlertDialog.Builder(requireContext())
+                .setView(dialogView)
+                .setCancelable(false)
+                .create()
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.show()
+
+            val playroomNameEditText: EditText = dialogView.findViewById(R.id.et_playroom_name)
+            val createPlayroomButton: Button = dialogView.findViewById(R.id.bt_create_game)
+            createPlayroomButton.setOnClickListener {
+                val playroomName = playroomNameEditText.text.toString()
+                roomViewModel.createPlayroom(playroomName)
+                dialog.dismiss()
+            }
+        }
     }
 
 
     //creating method to make it look simpler
     private fun roomClickListener(room: RoomsPlayers) {
-        //viewModel.selectedMovie = movie
-        roomClickListener.launchGame(room)
-    }
-
-    interface RoomOnClickListener {
-        fun launchGame(room: RoomsPlayers)
+        //roomClickListener.launchGame(room)
+        val roomId = if (room.isRoom) room.id else room.roomOwnerId
+        Toast.makeText(requireContext(), "Room $roomId is pressed.", Toast.LENGTH_SHORT).show()
     }
 }

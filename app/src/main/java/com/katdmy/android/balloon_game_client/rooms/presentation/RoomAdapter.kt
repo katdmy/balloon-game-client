@@ -1,6 +1,5 @@
 package com.katdmy.android.balloon_game_client.rooms.presentation
 
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.katdmy.android.balloon_game_client.R
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
-import com.katdmy.android.balloon_game_client.common.ColorsHelper
 
 class RoomAdapter(
     private val roomOnClickListener: (RoomsPlayers) -> Unit
@@ -50,7 +48,14 @@ class RoomAdapter(
                     )
                 }
             }
-            is PlayerViewHolder -> holder.onBind(roomsPlayers[position])
+            is PlayerViewHolder -> {
+                holder.onBind(roomsPlayers[position])
+                holder.itemView.setOnClickListener {
+                    roomOnClickListener(
+                        roomsPlayers[position]
+                    )
+                }
+            }
         }
     }
 
@@ -80,7 +85,6 @@ private class PlayerViewHolder(itemView: View) : ListItemViewHolder(itemView) {
 
     fun onBind(player: RoomsPlayers) {
         playerName.text = player.name
-        playerAvatar.backgroundTintList = ColorStateList.valueOf(ColorsHelper.generateColor())
     }
 }
 

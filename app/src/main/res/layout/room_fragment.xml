@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F0F5F2">
 
     <ImageView
         android:id="@+id/iv_dialog_background"
@@ -14,16 +16,58 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_player_avatar"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_avatar"
+        android:contentDescription="@string/room_icon_content_description"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_player_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/iv_player_avatar"
+        app:layout_constraintEnd_toStartOf="@id/bt_create_playroom"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toEndOf="@+id/iv_player_avatar"
+        app:layout_constraintTop_toTopOf="@id/iv_player_avatar"
+        app:layout_constraintVertical_bias="0.3"
+        tools:text="@tools:sample/full_names" />
+
+    <Button
+        android:id="@+id/bt_create_playroom"
+        android:layout_width="185dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="23dp"
+        android:background="@drawable/button_create_playroom_bg"
+        android:text="@string/room_create_play_room"
+        app:layout_constraintBottom_toBottomOf="@id/iv_player_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_player_avatar" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rooms_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="12dp"
+        android:layout_marginVertical="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/iv_player_avatar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

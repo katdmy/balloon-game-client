@@ -13,13 +13,14 @@ import androidx.lifecycle.Observer
 import com.katdmy.android.balloon_game_client.databinding.FragmentGameBinding
 import com.katdmy.android.balloon_game_client.presetation.QuestionDialogFragment
 import com.katdmy.android.balloon_game_client.presetation.QuestionViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.katdmy.android.balloon_game_client.presetation.QuestionDialogFragment
+import com.katdmy.android.balloon_game_client.presetation.QuestionViewModel
 import com.katdmy.android.balloon_game_client.rooms.presentation.ViewModelFactory
 
 class GameFragment : Fragment() {
     private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
-    private val questionViewModel: QuestionViewModel by viewModel()
+    //private val questionViewModel: QuestionViewModel by viewModel()
 
     private val viewModel: GameViewModel by activityViewModels {
         ViewModelFactory(
@@ -50,16 +51,16 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        questionViewModel.downloadQuestionModel(1)
+        /*questionViewModel.downloadQuestionModel(1)
 
         questionViewModel.timer.observe(
             viewLifecycleOwner,
             {
                 binding.progressBar.progress = it.toInt()
                 }
-        )
-        val questionDialogFragment = QuestionDialogFragment.newInstance(1, 30)
-        fragmentManager?.let { questionDialogFragment.show(it, "questionDialog") }
+        )*/
+        //val questionDialogFragment = QuestionDialogFragment.newInstance(1, 30)
+        //fragmentManager?.let { questionDialogFragment.show(it, "questionDialog") }
 
     }
 

@@ -6,13 +6,11 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
 import com.katdmy.android.balloon_game_client.rooms.presentation.RoomFragment
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.katdmy.android.balloon_game_client.presetation.QuestionDialogFragment
 import com.katdmy.android.balloon_game_client.utils.CustomSnivel
 
-class MainActivity : AppCompatActivity(), RoomFragment.RoomOnClickListener {
+class MainActivity : AppCompatActivity() {
 
     private val roomFragment = RoomFragment()
 
@@ -20,10 +18,11 @@ class MainActivity : AppCompatActivity(), RoomFragment.RoomOnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val animatedPeppe = findViewById<ImageView>(R.id.vPeppe)
         supportFragmentManager.beginTransaction()
             .replace(R.id.activity_main, roomFragment)
             .commit()
+
+        val animatedPeppe = findViewById<ImageView>(R.id.vPeppe)
 
         val snivel = findViewById<CustomSnivel>(R.id.vSnivel)
 
@@ -40,14 +39,6 @@ class MainActivity : AppCompatActivity(), RoomFragment.RoomOnClickListener {
             }
         }
 
-    }
-
-    override fun launchGame(room: RoomsPlayers) {
-        Toast.makeText(this, "${room.name} clicked!", Toast.LENGTH_SHORT).show()
-        /*supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_layout, movieDetails)
-            .addToBackStack(null)
-            .commit()*/
     }
 
 }
