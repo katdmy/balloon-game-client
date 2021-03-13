@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), RoomFragment.RoomOnClickListener {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.frame_layout, roomFragment)
+            .add(R.id.activity_main, roomFragment)
             .commit()
 
         // Меняем цвет пуза у хрюшки
