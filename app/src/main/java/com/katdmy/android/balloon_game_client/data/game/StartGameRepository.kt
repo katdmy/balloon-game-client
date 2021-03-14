@@ -8,38 +8,34 @@ import com.katdmy.android.balloon_game_client.domain.repository.game.IStartGameR
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.WebSocket
-import okhttp3.WebSocketListener
-import java.util.logging.Logger
+import okhttp3.*
+import ua.naiksoftware.stomp.Stomp
 
 class StartGameRepository(private val client: OkHttpClient) : IStartGameRepository {
+    private val stompClient = Stomp.over(
+        Stomp.ConnectionProvider.OKHTTP,
+        "ws://192.168.1.58:8080/ws-endpoint/websocket"
+    );
+
+    init {
+        stompClient.connect()
+    }
+
 
     override suspend fun subscribeRoomEvent(roomId: String): Flow<StatusGameEntity.StartGameEntity> {
         return flow {
-//            val request: Request = Request.Builder()
-//                .url("ws://localhost:8080/game/$roomId/start/events")
-//                .build();
-//            client.newWebSocket(request, object: WebSocketListener() {
-//                override fun onMessage(webSocket: WebSocket, text: String) {
-//                    super.onMessage(webSocket, text)
-//                    Log.d("ballon", text)
-//                }
-//            })
+            stompClient.topic("/game/d4576b3b305e1df6f8ef4517ec2f9615/start/events")
+                .subscribe({ topicMessage -> Log.d("ballon2", topicMessage.getPayload()) })
         }
     }
 
     override suspend fun sendStartGameEvent(req: StartGameRequest) {
-//        val request: Request = Request.Builder()
-//            .url("ws://localhost:8080/app/game/start")
-//            .build();
-//
-//        val ws = client.newWebSocket(request, object: WebSocketListener() {
-//
-//        })
-//
-//        ws.send(Gson().toJson(req))
+        stompClient.send("/app/game/start", Gson().toJson(StartGameRequest("d4576b3b305e1df6f8ef4517ec2f9615", req.userId)))
+            .subscribe({
+                Log.d("ballon", "yeah!")
+            }, {
+                Log.e("ballon", it.message, it)
+            })
     }
 
     fun timer(timeMs: Long): Flow<Long> = flow {

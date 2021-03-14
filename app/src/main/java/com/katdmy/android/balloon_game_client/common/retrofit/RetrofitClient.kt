@@ -8,7 +8,7 @@ import retrofit2.create
 
 object RetrofitClient {
 
-    private const val MainServer = "http://localhost:8080/"
+    private const val MainServer = "http://192.168.1.58:8080/"
 
     val client = OkHttpClient().newBuilder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
