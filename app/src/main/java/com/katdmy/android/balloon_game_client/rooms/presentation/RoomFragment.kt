@@ -102,10 +102,7 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
 
     private fun setUpAdapter() {
         recycler.layoutManager = LinearLayoutManager(activity)
-        adapter = RoomAdapter(
-            { room: RoomsPlayers -> roomClickListener(room) },
-            { playClickListener() }
-        )
+        adapter = RoomAdapter { room: RoomsPlayers -> roomClickListener(room) }
         recycler.adapter = adapter
 
     }
@@ -139,8 +136,8 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
         val roomId = if (room.isRoom) room.id else room.roomId
         roomViewModel.joinRoom(roomId)
     }
-
-    private fun playClickListener() {
-        roomViewModel.playGame()
-    }
+//
+//    private fun playClickListener() {
+//        roomViewModel.playGame()
+//    }
 }

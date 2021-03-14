@@ -86,12 +86,26 @@ class RoomViewModel(
             repo.joinRoom(userId, roomId)
             _mutableRoomResponse.value = repo.getRooms()
             currentRoomId = roomId
+
+            playGame()
         }
     }
 
     fun playGame() {
         viewModelScope.launch {
             startRepo.sendStartGameEvent(StartGameRequest(currentRoomId, userId))
+
+            viewModelScope.launch {
+                Log.d("testtest", "createPlayroom")
+                val entity = startRepo.subscribeRoomEvent(currentRoomId)
+                _startGameEvent.value = StartGameModel(
+                    duration = entity.duration,
+                    chance = entity.chance,
+                    questionNumber = entity.questionNumber,
+                    players = _mutableRoomResponse.value!!.filter { it.roomId == currentRoomId },
+                    roomId = entity.roomId,
+                    myId = userId)
+            }
         }
     }
 
