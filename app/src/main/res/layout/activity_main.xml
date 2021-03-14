@@ -7,6 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+
+
     <FrameLayout
         android:id="@+id/container_fragment"
         android:layout_width="match_parent"
@@ -30,6 +33,7 @@
         android:id="@+id/vPeppeWithSnivle"
         layout="@layout/item_pig_with_snivel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

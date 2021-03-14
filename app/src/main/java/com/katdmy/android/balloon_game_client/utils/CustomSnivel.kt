@@ -2,11 +2,11 @@ package com.katdmy.android.balloon_game_client.utils
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.getDimensionOrThrow
 import androidx.core.content.withStyledAttributes
 import com.katdmy.android.balloon_game_client.R
@@ -20,9 +20,9 @@ class CustomSnivel @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
     private val mBackgroundPaint by lazy {
         Paint().apply {
-            alpha = 0
+            alpha = 50
             isAntiAlias = true
-            color = Color.GREEN
+            color = ContextCompat.getColor(getContext(),R.color.green);
             style = Paint.Style.FILL
         }
     }
