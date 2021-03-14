@@ -1,6 +1,7 @@
 package com.katdmy.android.balloon_game_client.rooms.presentation
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -64,17 +65,20 @@ class RoomViewModel(
         viewModelScope.launch {
             currentRoomId = repo.createPlayroom(playroomName, userId)
             _mutableRoomResponse.value = repo.getRooms()
-
-            //
-
-            val entity = startRepo.subscribeRoomEvent(currentRoomId)
-            _startGameEvent.value = StartGameModel(
-                duration = entity.duration,
-                chance = entity.chance,
-                questionNumber = entity.questionNumber,
-                players = _mutableRoomResponse.value!!,
-                roomId = entity.roomId)
+            viewModelScope.launch {
+                //TODO Поидее должно быть в joinRoom но мы костылим
+                Log.d("testtest", "createPlayroom")
+                val entity = startRepo.subscribeRoomEvent(currentRoomId)
+                _startGameEvent.value = StartGameModel(
+                    duration = entity.duration,
+                    chance = entity.chance,
+                    questionNumber = entity.questionNumber,
+                    players = _mutableRoomResponse.value!!.filter { it.roomId == currentRoomId },
+                    roomId = entity.roomId,
+                    myId = userId)
+            }
         }
+
     }
 
     fun joinRoom(roomId: String) {
@@ -82,14 +86,6 @@ class RoomViewModel(
             repo.joinRoom(userId, roomId)
             _mutableRoomResponse.value = repo.getRooms()
             currentRoomId = roomId
-            //TODO: может отдельный метод?
-            val entity = startRepo.subscribeRoomEvent(currentRoomId)
-                _startGameEvent.value = StartGameModel(
-                    duration = entity.duration,
-                    chance = entity.chance,
-                    questionNumber = entity.questionNumber,
-                    players = _mutableRoomResponse.value!!,
-                    roomId = entity.roomId)
         }
     }
 

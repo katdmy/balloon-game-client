@@ -9,5 +9,6 @@ data class StartGameModel(
     val chance: Int,
     val questionNumber: Int,
     val players: List<RoomsPlayers>,
-    val roomId: String
+    val roomId: String,
+    val myId: String
 ) : Parcelable

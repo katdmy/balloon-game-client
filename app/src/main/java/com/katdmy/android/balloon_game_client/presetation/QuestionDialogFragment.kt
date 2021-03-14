@@ -3,12 +3,9 @@ package com.katdmy.android.balloon_game_client.presetation
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.katdmy.android.balloon_game_client.databinding.FragmentQuestionDialogBinding
@@ -24,20 +21,20 @@ class QuestionDialogFragment : DialogFragment() {
     private var chance: Int? = null
 
     companion object {
-        fun newInstance(rightAnswer: Int, chance: Int) = QuestionDialogFragment().apply {
+        fun newInstance(questionNumber: Int, chance: Int) = QuestionDialogFragment().apply {
             arguments = Bundle().apply {
-                putInt(RIGHT_ANSWER, rightAnswer)
+                putInt(QUESTION_NUMBER, questionNumber)
                 putInt(CHANCE, chance )
             }
         }
 
-        private const val RIGHT_ANSWER = "ANSWER_KEY"
+        private const val QUESTION_NUMBER = "QUESTION_NUMBER"
         private const val CHANCE = "CHANCE"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        rightAnswer = arguments?.getInt(RIGHT_ANSWER)
+        rightAnswer = arguments?.getInt(QUESTION_NUMBER)
     chance = arguments?.getInt(CHANCE)
     }
     override fun onCreateView(

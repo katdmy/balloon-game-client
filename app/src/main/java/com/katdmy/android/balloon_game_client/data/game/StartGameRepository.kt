@@ -28,7 +28,7 @@ class StartGameRepository(private val client: OkHttpClient) : IStartGameReposito
         return suspendCoroutine {
             stompClient.topic("/game/$roomId/start/events")
                 .subscribe({ topicMessage ->
-                    Log.d("ballon2", topicMessage.payload)
+                    Log.d("ballon2", "start/events " + topicMessage.payload)
                     val entity = Gson().fromJson(topicMessage.payload, StatusGameEntity.StartGameEntity::class.java)
                     it.resumeWith(Result.success(entity))
                 }, {
@@ -41,7 +41,7 @@ class StartGameRepository(private val client: OkHttpClient) : IStartGameReposito
     override suspend fun sendStartGameEvent(req: StartGameRequest) {
         stompClient.send(
             "/app/game/start",
-            Gson().toJson(StartGameRequest(req.roomId, req.userId))
+            Gson().toJson(req)
         )
             .subscribe({
                 Log.d("ballon", "yeah!")

@@ -12,7 +12,7 @@ import com.katdmy.android.balloon_game_client.rooms.domain.models.Player
 import com.katdmy.android.balloon_game_client.rooms.presentation.ListItemViewHolder
 import com.katdmy.android.balloon_game_client.utils.CustomSnivel
 
-class GamersAdapter : RecyclerView.Adapter<ListItemViewHolder>() {
+class GamersAdapter(val clcklstnr: (userId: String, size: Double, currentPossition: Int) -> Unit) : RecyclerView.Adapter<ListItemViewHolder>() {
 
     private var players = listOf<Player>()
 
@@ -36,20 +36,25 @@ class GamersAdapter : RecyclerView.Adapter<ListItemViewHolder>() {
                 val animatedPeppe = holder.itemView.findViewById<ImageView>(R.id.vPeppe)
 
                 val snivel = holder.itemView.findViewById<CustomSnivel>(R.id.vSnivel)
-
                 val item = holder.itemView
-
+                snivel.setProgress(players[position].progress)
                 item.setOnClickListener {
                     val drawable = animatedPeppe.drawable
                     (drawable as Animatable).start()
-                    val random = (0..100).random()
-                    if (random in 10..90) {
+//                    val random = (0..100).random()
+//                    if (random in 10..90) {
                         snivel.increaseSnivel()
-                    } else {
-                        snivel.clearSnivel()
-                    }
+//                    } else {
+//                        snivel.clearSnivel()
+//                    }
+                    clcklstnr.invoke(players[position].id, snivel.diffs, position)
                 }
             }
+    }
+
+    fun increaseSnivel(position: Int, size: Double) {
+        players[position].progress = size
+        notifyItemChanged(position)
     }
 
     fun setPlayers(players: List<Player>) {
@@ -64,4 +69,5 @@ private class GamersViewHolder(itemView: View) : ListItemViewHolder(itemView) {
     fun onBind(player: Player) {
         nickname.text = player.name
     }
+
 }
