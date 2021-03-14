@@ -19,13 +19,14 @@ class StartGameRepository(private val client: OkHttpClient) : IStartGameReposito
 
     init {
         stompClient.connect()
+        stompClient.topic("/game/d4576b3b305e1df6f8ef4517ec2f9615/start/events")
+            .subscribe({ topicMessage -> Log.d("ballon2", topicMessage.getPayload()) }, { Log.e("ballon2", it.message, it) })
     }
 
 
     override suspend fun subscribeRoomEvent(roomId: String): Flow<StatusGameEntity.StartGameEntity> {
         return flow {
-            stompClient.topic("/game/d4576b3b305e1df6f8ef4517ec2f9615/start/events")
-                .subscribe({ topicMessage -> Log.d("ballon2", topicMessage.getPayload()) })
+
         }
     }
 
