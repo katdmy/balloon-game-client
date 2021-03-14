@@ -11,7 +11,7 @@ object RetrofitClient {
     private const val MainServer = "http://143.198.226.5/"
 
     val client = OkHttpClient().newBuilder()
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        //.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 
     @Suppress("EXPERIMENTAL_API_USAGE")

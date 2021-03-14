@@ -95,6 +95,8 @@ class RoomViewModel(
         }
     }
 
+    fun getUserId() = userId
+
     companion object {
         val LOGIN_ID = "loginId"
         val LOGIN_NAME = "loginName"

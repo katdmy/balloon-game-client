@@ -1,5 +1,6 @@
 package com.katdmy.android.balloon_game_client.rooms.presentation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.katdmy.android.balloon_game_client.R
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
 
 class RoomAdapter(
+    private val currentPlayerId: String,
     private val roomOnClickListener: (RoomsPlayers) -> Unit,
     private val playOnClickListener: () -> Unit
 ) : RecyclerView.Adapter<ListItemViewHolder>() {
@@ -49,9 +51,11 @@ class RoomAdapter(
 
                     roomOnClickListener(room)
                 }
-                roomsPlayers.find { it.roomId == room.id }?.also { _ ->
+                if (roomsPlayers.filter { it.roomId == room.id && currentPlayerId == it.id }
+                        .isNotEmpty())
                     holder.showPlayButton(playOnClickListener)
-                }
+                else
+                    holder.hidePlayButton()
             }
             is PlayerViewHolder -> {
                 holder.onBind(roomsPlayers[position])
@@ -83,6 +87,10 @@ private class RoomViewHolder(itemView: View) : ListItemViewHolder(itemView) {
         playButton.setOnClickListener {
             playOnClickListener.invoke()
         }
+    }
+
+    fun hidePlayButton() {
+        playButton.visibility = View.GONE
     }
 }
 
