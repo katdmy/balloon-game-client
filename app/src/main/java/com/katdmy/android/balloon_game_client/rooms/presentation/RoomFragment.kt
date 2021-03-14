@@ -4,9 +4,7 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import android.widget.*
 import androidx.fragment.app.activityViewModels
@@ -105,7 +103,7 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
         adapter = RoomAdapter(
             roomViewModel.getUserId(),
             { room: RoomsPlayers -> roomClickListener(room) },
-            { playClickListener() }
+            { roomId: String -> playClickListener(roomId) }
         )
         recycler.adapter = adapter
 
@@ -141,7 +139,7 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
         roomViewModel.joinRoom(roomId)
     }
 
-    private fun playClickListener() {
-        roomViewModel.playGame()
+    private fun playClickListener(roomId: String) {
+        roomViewModel.playGame(roomId)
     }
 }

@@ -50,7 +50,7 @@ class RoomViewModel(
             LoginState.False
     }
 
-    fun login(username: String) {
+    fun login(username: String): String {
         val editor = sharedPreferences.edit()
         viewModelScope.launch {
             userId = repo.createUser(username)
@@ -59,6 +59,7 @@ class RoomViewModel(
             editor.putString(LOGIN_NAME, username)
             editor.apply()
         }
+        return userId
     }
 
     fun createPlayroom(playroomName: String) {
@@ -89,8 +90,9 @@ class RoomViewModel(
         }
     }
 
-    fun playGame() {
+    fun playGame(roomId: String) {
         viewModelScope.launch {
+            currentRoomId = roomId
             startRepo.sendStartGameEvent(StartGameRequest(currentRoomId, userId))
         }
     }
