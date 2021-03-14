@@ -12,6 +12,7 @@ import com.katdmy.android.balloon_game_client.rooms.data.RoomRepository
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
 import com.katdmy.android.balloon_game_client.rooms.domain.models.StartGameModel
 import com.katdmy.android.balloon_game_client.utils.SingleLiveEvent
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -68,19 +69,6 @@ class RoomViewModel(
         viewModelScope.launch {
             currentRoomId = repo.createPlayroom(playroomName, userId)
             _mutableRoomResponse.value = repo.getRooms(userId)
-            viewModelScope.launch {
-                //TODO Поидее должно быть в joinRoom но мы костылим
-                Log.d("testtest", "createPlayroom")
-                val entity = startRepo.subscribeRoomEvent(currentRoomId)
-                _startGameEvent.value = StartGameModel(
-                    duration = entity.duration,
-                    chance = entity.chance,
-                    questionNumber = entity.questionNumber,
-                    players = _mutableRoomResponse.value!!.filter { it.roomId == currentRoomId },
-                    roomId = entity.roomId,
-                    myId = userId
-                )
-            }
         }
 
     }
@@ -94,8 +82,21 @@ class RoomViewModel(
     }
 
     fun playGame(roomId: String) {
+        currentRoomId = roomId
         viewModelScope.launch {
-            currentRoomId = roomId
+            Log.d("testtest", "createPlayroom")
+            startRepo.subscribeRoomEvent(currentRoomId).collect { entity ->
+                _startGameEvent.value = StartGameModel(
+                    duration = entity.duration,
+                    chance = entity.chance,
+                    questionNumber = entity.questionNumber,
+                    players = _mutableRoomResponse.value!!.filter { it.roomId == currentRoomId },
+                    roomId = entity.roomId,
+                    myId = userId
+                )
+            }
+        }
+        viewModelScope.launch {
             startRepo.sendStartGameEvent(StartGameRequest(currentRoomId, userId))
         }
     }
