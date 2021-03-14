@@ -3,7 +3,7 @@ package com.katdmy.android.balloon_game_client.rooms.domain.models
 import com.katdmy.android.balloon_game_client.rooms.data.models.RoomResponse
 
 class ModelsMapper {
-    fun fromApiToLocal(apiResponse: List<RoomResponse>): List<RoomsPlayers> {
+    fun fromApiToLocal(apiResponse: List<RoomResponse>, currentUserId: String): List<RoomsPlayers> {
         val roomsPlayers = mutableListOf<RoomsPlayers>()
         apiResponse.forEach { room ->
             roomsPlayers.add(
@@ -12,7 +12,8 @@ class ModelsMapper {
                     name = room.name,
                     isRoom = true,
                     roomId = "",
-                    roomOwnerId = ""
+                    roomOwnerId = "",
+                    showPlayButton = room.participants.find { it.id == currentUserId } != null
                 )
             )
             room.participants.forEach { player ->

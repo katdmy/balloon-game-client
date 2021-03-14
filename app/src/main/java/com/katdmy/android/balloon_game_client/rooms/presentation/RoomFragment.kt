@@ -101,7 +101,6 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
     private fun setUpAdapter() {
         recycler.layoutManager = LinearLayoutManager(activity)
         adapter = RoomAdapter(
-            roomViewModel.getUserId(),
             { room: RoomsPlayers -> roomClickListener(room) },
             { roomId: String -> playClickListener(roomId) }
         )

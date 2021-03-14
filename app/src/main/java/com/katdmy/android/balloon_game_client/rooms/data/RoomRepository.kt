@@ -16,8 +16,8 @@ class RoomRepository(
     override suspend fun createUser(username: String): String =
         roomApi.createUser(UserCreateRequest(username)).id
 
-    override suspend fun getRooms(): List<RoomsPlayers> =
-        modelsMapper.fromApiToLocal(roomApi.getRooms())
+    override suspend fun getRooms(currentUserId: String): List<RoomsPlayers> =
+        modelsMapper.fromApiToLocal(roomApi.getRooms(), currentUserId)
 
     override suspend fun createPlayroom(playroomName: String, userId: String): String =
         roomApi.createPlayroom(PlayroomCreateRequest(playroomName, userId)).id

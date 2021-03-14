@@ -6,7 +6,7 @@ interface IRoomRepository {
 
     suspend fun createUser(username: String): String
 
-    suspend fun getRooms(): List<RoomsPlayers>
+    suspend fun getRooms(currentUserId: String): List<RoomsPlayers>
 
     suspend fun createPlayroom(playroomName: String, userId: String): String
 

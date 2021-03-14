@@ -12,7 +12,6 @@ import com.katdmy.android.balloon_game_client.rooms.data.RoomRepository
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
 import com.katdmy.android.balloon_game_client.rooms.domain.models.StartGameModel
 import com.katdmy.android.balloon_game_client.utils.SingleLiveEvent
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -34,8 +33,10 @@ class RoomViewModel(
     private lateinit var currentRoomId: String
 
     fun getRooms() {
-        viewModelScope.launch {
-            _mutableRoomResponse.value = repo.getRooms()
+        if (this::userId.isInitialized) {
+            viewModelScope.launch {
+                _mutableRoomResponse.value = repo.getRooms(userId)
+            }
         }
     }
 
@@ -50,7 +51,7 @@ class RoomViewModel(
             LoginState.False
     }
 
-    fun login(username: String): String {
+    fun login(username: String) {
         val editor = sharedPreferences.edit()
         viewModelScope.launch {
             userId = repo.createUser(username)
@@ -58,14 +59,15 @@ class RoomViewModel(
             editor.putString(LOGIN_ID, userId)
             editor.putString(LOGIN_NAME, username)
             editor.apply()
+
+            getRooms()
         }
-        return userId
     }
 
     fun createPlayroom(playroomName: String) {
         viewModelScope.launch {
             currentRoomId = repo.createPlayroom(playroomName, userId)
-            _mutableRoomResponse.value = repo.getRooms()
+            _mutableRoomResponse.value = repo.getRooms(userId)
             viewModelScope.launch {
                 //TODO Поидее должно быть в joinRoom но мы костылим
                 Log.d("testtest", "createPlayroom")
@@ -76,7 +78,8 @@ class RoomViewModel(
                     questionNumber = entity.questionNumber,
                     players = _mutableRoomResponse.value!!.filter { it.roomId == currentRoomId },
                     roomId = entity.roomId,
-                    myId = userId)
+                    myId = userId
+                )
             }
         }
 
@@ -85,7 +88,7 @@ class RoomViewModel(
     fun joinRoom(roomId: String) {
         viewModelScope.launch {
             repo.joinRoom(userId, roomId)
-            _mutableRoomResponse.value = repo.getRooms()
+            _mutableRoomResponse.value = repo.getRooms(userId)
             currentRoomId = roomId
         }
     }

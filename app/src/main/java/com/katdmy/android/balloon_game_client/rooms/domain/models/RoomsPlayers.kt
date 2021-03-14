@@ -8,6 +8,7 @@ data class RoomsPlayers(
     val id: String,
     val name: String,
     val roomId: String,
+    var showPlayButton: Boolean = false,
     val isRoom: Boolean,
     val roomOwnerId: String,
     val isLast: Boolean = false,

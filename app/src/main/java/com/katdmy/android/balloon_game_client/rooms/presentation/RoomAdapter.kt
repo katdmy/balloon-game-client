@@ -11,7 +11,6 @@ import com.katdmy.android.balloon_game_client.R
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
 
 class RoomAdapter(
-    private val currentPlayerId: String,
     private val roomOnClickListener: (RoomsPlayers) -> Unit,
     private val playOnClickListener: (String) -> Unit
 ) : RecyclerView.Adapter<ListItemViewHolder>() {
@@ -47,12 +46,11 @@ class RoomAdapter(
                 val room = roomsPlayers[position]
                 holder.onBind(room)
                 holder.itemView.setOnClickListener {
-                    holder.showPlayButton(room) { playOnClickListener(room.id) }
+//                    holder.showPlayButton(room) { playOnClickListener(room.id) }
 
                     roomOnClickListener(room)
                 }
-                if (roomsPlayers.filter { it.roomId == room.id && currentPlayerId == it.id }
-                        .isNotEmpty())
+                if (roomsPlayers[position].showPlayButton)
                     holder.showPlayButton(room) { playOnClickListener(room.id) }
                 else
                     holder.hidePlayButton()
