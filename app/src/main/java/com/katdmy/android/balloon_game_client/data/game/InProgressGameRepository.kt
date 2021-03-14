@@ -18,7 +18,7 @@ import ua.naiksoftware.stomp.Stomp
 class InProgressGameRepository: IInProgressGameRepository {
     private val stompClient = Stomp.over(
         Stomp.ConnectionProvider.OKHTTP,
-        "ws://192.168.1.58:8080/ws-endpoint/websocket"
+        "ws://143.198.226.5/ws-endpoint/websocket"
     );
 
     init {
