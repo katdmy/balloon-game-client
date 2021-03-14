@@ -29,16 +29,16 @@ class MainActivity : AppCompatActivity() {
 
         val item = findViewById<ConstraintLayout>(R.id.vPeppeWithSnivle)
 
-        item.setOnClickListener {
-            val drawable = animatedPeppe.drawable
-            (drawable as Animatable).start()
-            val random = (0..100).random()
-            if (random in 10..90) {
-                snivel.increaseSnivel()
-            } else {
-                snivel.clearSnivel()
-            }
-        }
+//        item.setOnClickListener {
+//            val drawable = animatedPeppe.drawable
+//            (drawable as Animatable).start()
+//            val random = (0..100).random()
+//            if (random in 10..90) {
+//                snivel.increaseSnivel()
+//            } else {
+//                snivel.clearSnivel()
+//            }
+//        }
 
     }
 

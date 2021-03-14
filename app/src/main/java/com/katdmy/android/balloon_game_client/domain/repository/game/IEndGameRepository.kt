@@ -4,5 +4,5 @@ import com.katdmy.android.balloon_game_client.domain.repository.entity.StatusGam
 import kotlinx.coroutines.flow.Flow
 
 interface IEndGameRepository {
-    suspend fun subscribeRoomEvent(): Flow<EndGameEntity>
+    suspend fun subscribeRoomEvent(roomId: String): Flow<EndGameEntity>
 }

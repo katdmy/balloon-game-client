@@ -32,7 +32,7 @@ class CustomSnivel @JvmOverloads constructor(
     private var snivelX: Float = 0f
     private var snivelY: Float = 0f
 
-    private var diffs = 0.025
+    public var diffs = 0.025
 
     init {
         context.withStyledAttributes(
@@ -101,6 +101,11 @@ class CustomSnivel @JvmOverloads constructor(
 
     fun clearSnivel() {
         diffs = 0.05
+        invalidate()
+    }
+
+    fun setProgress(newDiff: Double) {
+        diffs = newDiff
         invalidate()
     }
 

@@ -1,7 +1,10 @@
 package com.katdmy.android.balloon_game_client.presetation.di
 
+import com.katdmy.android.balloon_game_client.common.retrofit.RetrofitClient
 import com.katdmy.android.balloon_game_client.data.QuestionModelRepository
-import com.katdmy.android.balloon_game_client.data.game.GameRepository
+import com.katdmy.android.balloon_game_client.data.game.EndGameRepository
+import com.katdmy.android.balloon_game_client.data.game.InProgressGameRepository
+import com.katdmy.android.balloon_game_client.data.game.StartGameRepository
 import com.katdmy.android.balloon_game_client.presetation.QuestionViewModel
 import com.katdmy.android.balloon_game_client.presetation.di.game.GameViewModel
 import com.katdmy.android.balloon_game_client.rooms.domain.models.StartGameModel
@@ -11,7 +14,10 @@ import org.koin.dsl.module
 val appModule = module {
 
     single { QuestionModelRepository() }
-    single { GameRepository() }
+    single { StartGameRepository(RetrofitClient.client) }
+    single { InProgressGameRepository() }
+    single { EndGameRepository() }
+
 }
 
 val viewModel = module {
@@ -22,7 +28,9 @@ val viewModel = module {
     viewModel { (model: StartGameModel) ->
         GameViewModel(
             model = model,
-            gameRepo = get()
+            startGameRepo = get(),
+            inProgressGameRepository = get(),
+            endGameRepository = get()
         )
     }
 }

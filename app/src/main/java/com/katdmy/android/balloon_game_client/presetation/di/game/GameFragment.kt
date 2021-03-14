@@ -9,7 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.katdmy.android.balloon_game_client.databinding.FragmentGameBinding
+import com.katdmy.android.balloon_game_client.domain.repository.entity.StatusGameEntity
+import com.katdmy.android.balloon_game_client.domain.repository.entity.StatusGameEntity.StartGameEntity
+import com.katdmy.android.balloon_game_client.rooms.presentation.ViewModelFactory
 import com.katdmy.android.balloon_game_client.presetation.QuestionDialogFragment
+import com.katdmy.android.balloon_game_client.presetation.di.winners.WinnersDialogFragment
+import com.katdmy.android.balloon_game_client.rooms.domain.models.StartGameModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -39,15 +44,22 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val questionDialogFragment = QuestionDialogFragment.newInstance(1, 30)
-        fragmentManager?.let { questionDialogFragment.show(it, "questionDialog") }
-
         viewModel.timer.observe(
             viewLifecycleOwner, Observer {
                 binding.progressBar.progress = it.toInt()
             }
         )
+
+        binding.question.setOnClickListener {
+            val data = requireArguments().getParcelable<StartGameModel>(START_GAME_DATA)
+            QuestionDialogFragment.newInstance(data!!.questionNumber, data!!.chance).show(childFragmentManager, "quest")
+        }
+
+
+        viewModel._goToWinnersScreen.observe(viewLifecycleOwner, {
+            val dialog = WinnersDialogFragment.newInstance("User ${it} winner" )
+            dialog.show(childFragmentManager, "win")
+        })
     }
 
     private fun setUpRecycler() {
@@ -58,7 +70,9 @@ class GameFragment : Fragment() {
                     LinearLayoutManager.VERTICAL,
                     false
                 )
-                val gamerAdapter = GamersAdapter()
+                val gamerAdapter = GamersAdapter { userId, size, currentPossition ->
+                    viewModel.onInflateClick(userId, size, currentPossition)
+                }
 
                 viewModel.players.observe(
                     viewLifecycleOwner,
