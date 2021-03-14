@@ -41,10 +41,6 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val questionDialogFragment = QuestionDialogFragment.newInstance(1, 30)
-        fragmentManager?.let { questionDialogFragment.show(it, "questionDialog") }
-
         viewModel.timer.observe(
             viewLifecycleOwner, Observer {
                 binding.progressBar.progress = it.toInt()

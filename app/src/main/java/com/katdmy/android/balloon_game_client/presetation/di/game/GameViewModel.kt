@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.katdmy.android.balloon_game_client.data.game.GameRepository
+import com.katdmy.android.balloon_game_client.data.game.StartGameRepository
 import com.katdmy.android.balloon_game_client.rooms.domain.models.Player
 import com.katdmy.android.balloon_game_client.rooms.domain.models.StartGameModel
 import kotlinx.coroutines.flow.collect
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class GameViewModel(
     model: StartGameModel,
-    private val gameRepo: GameRepository
+    private val startGameRepo: StartGameRepository
 ) : ViewModel() {
 
     private val playerList = listOf(
@@ -48,7 +48,7 @@ class GameViewModel(
 
     init {
         viewModelScope.launch {
-            val flowTimer = gameRepo.timer(model.duration.toLong())
+            val flowTimer = startGameRepo.timer(model.duration.toLong())
             flowTimer.collect {
                 _mutableTimer.value = it
             }

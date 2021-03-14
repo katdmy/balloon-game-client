@@ -89,8 +89,7 @@ class RoomFragment : Fragment(R.layout.room_fragment) {
         })
 
         roomViewModel.startGameEvent.observe(viewLifecycleOwner, Observer {
-            val gameFragment =
-                GameFragment()
+            val gameFragment = GameFragment()
             val bundle = Bundle()
             bundle.putParcelable(START_GAME_DATA, it)
             gameFragment.arguments = bundle

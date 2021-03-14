@@ -50,7 +50,7 @@ class RoomAdapter(
                     roomOnClickListener(room)
                 }
                 roomsPlayers.find { it.roomId == room.id }?.also { _ ->
-                    holder.showPlayButton { playOnClickListener }
+                    holder.showPlayButton(playOnClickListener)
                 }
             }
             is PlayerViewHolder -> {
@@ -81,7 +81,7 @@ private class RoomViewHolder(itemView: View) : ListItemViewHolder(itemView) {
     fun showPlayButton(playOnClickListener: () -> Unit) {
         playButton.visibility = View.VISIBLE
         playButton.setOnClickListener {
-            playOnClickListener()
+            playOnClickListener.invoke()
         }
     }
 }

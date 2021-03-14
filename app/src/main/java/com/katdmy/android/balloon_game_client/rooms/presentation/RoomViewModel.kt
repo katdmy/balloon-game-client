@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.katdmy.android.balloon_game_client.data.game.dto.StartGameRequest
 import com.katdmy.android.balloon_game_client.domain.repository.game.IStartGameRepository
 import com.katdmy.android.balloon_game_client.rooms.data.RoomRepository
 import com.katdmy.android.balloon_game_client.rooms.domain.models.RoomsPlayers
 import com.katdmy.android.balloon_game_client.rooms.domain.models.StartGameModel
 import com.katdmy.android.balloon_game_client.utils.SingleLiveEvent
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -29,20 +31,6 @@ class RoomViewModel(
 
     private lateinit var userId: String
     private lateinit var currentRoomId: String
-
-//    init {
-//        viewModelScope.launch {
-//            startRepo.subscribeRoomEvent().collect { entity ->
-//                _startGameEvent.value = StartGameModel(
-//                    duration = entity.duration,
-//                    chance = entity.chance,
-//                    questionNumber = entity.questionNumber,
-//                    players = _mutableRoomResponse.value!!,
-//                    roomId = entity.roomId
-//                )
-//            }
-//        }
-//    }
 
     fun getRooms() {
         viewModelScope.launch {
@@ -84,20 +72,22 @@ class RoomViewModel(
             repo.joinRoom(userId, roomId)
             _mutableRoomResponse.value = repo.getRooms()
             currentRoomId = roomId
+            //TODO: может отдельный метод?
+            startRepo.subscribeRoomEvent(currentRoomId).collect { entity ->
+                _startGameEvent.value = StartGameModel(
+                    duration = entity.duration,
+                    chance = entity.chance,
+                    questionNumber = entity.questionNumber,
+                    players = _mutableRoomResponse.value!!,
+                    roomId = entity.roomId)
+            }
         }
     }
 
     fun playGame() {
-        /*viewModelScope.launch {
-            startRepo.subscribeRoomEvent().collect {
-                _startGameEvent.value = StartGameModel(
-                    duration = it.duration,
-                    chance = it.chance,
-                    questionNumber = it.questionNumber,
-                    participantIds = it.participantIds
-                )
-            }
-        }*/
+        viewModelScope.launch {
+            startRepo.sendStartGameEvent(StartGameRequest("ad0234829205b9033196ba818f7a872b", "7815696ecbf1c96e6894b779456d330e"))
+        }
     }
 
     companion object {
