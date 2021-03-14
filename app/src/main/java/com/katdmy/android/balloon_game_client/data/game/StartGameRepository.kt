@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.*
 import ua.naiksoftware.stomp.Stomp
+import kotlin.coroutines.suspendCoroutine
 
 class StartGameRepository(private val client: OkHttpClient) : IStartGameRepository {
     private val stompClient = Stomp.over(
@@ -19,19 +20,29 @@ class StartGameRepository(private val client: OkHttpClient) : IStartGameReposito
 
     init {
         stompClient.connect()
-        stompClient.topic("/game/d4576b3b305e1df6f8ef4517ec2f9615/start/events")
-            .subscribe({ topicMessage -> Log.d("ballon2", topicMessage.getPayload()) }, { Log.e("ballon2", it.message, it) })
     }
 
 
-    override suspend fun subscribeRoomEvent(roomId: String): Flow<StatusGameEntity.StartGameEntity> {
-        return flow {
+    override suspend fun subscribeRoomEvent(roomId: String): StatusGameEntity.StartGameEntity {
 
+        return suspendCoroutine {
+            stompClient.topic("/game/$roomId/start/events")
+                .subscribe({ topicMessage ->
+                    Log.d("ballon2", topicMessage.payload)
+                    val entity = Gson().fromJson(topicMessage.payload, StatusGameEntity.StartGameEntity::class.java)
+                    it.resumeWith(Result.success(entity))
+                }, {
+                    Log.e("ballon2", it.message, it)
+                    Result.failure<Throwable>(it)
+                })
         }
     }
 
     override suspend fun sendStartGameEvent(req: StartGameRequest) {
-        stompClient.send("/app/game/start", Gson().toJson(StartGameRequest("d4576b3b305e1df6f8ef4517ec2f9615", req.userId)))
+        stompClient.send(
+            "/app/game/start",
+            Gson().toJson(StartGameRequest(req.roomId, req.userId))
+        )
             .subscribe({
                 Log.d("ballon", "yeah!")
             }, {

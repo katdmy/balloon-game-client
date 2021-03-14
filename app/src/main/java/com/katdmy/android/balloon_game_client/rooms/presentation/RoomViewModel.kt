@@ -62,8 +62,18 @@ class RoomViewModel(
 
     fun createPlayroom(playroomName: String) {
         viewModelScope.launch {
-            repo.createPlayroom(playroomName, userId)
+            currentRoomId = repo.createPlayroom(playroomName, userId)
             _mutableRoomResponse.value = repo.getRooms()
+
+            //
+
+            val entity = startRepo.subscribeRoomEvent(currentRoomId)
+            _startGameEvent.value = StartGameModel(
+                duration = entity.duration,
+                chance = entity.chance,
+                questionNumber = entity.questionNumber,
+                players = _mutableRoomResponse.value!!,
+                roomId = entity.roomId)
         }
     }
 
@@ -73,20 +83,19 @@ class RoomViewModel(
             _mutableRoomResponse.value = repo.getRooms()
             currentRoomId = roomId
             //TODO: может отдельный метод?
-            startRepo.subscribeRoomEvent(currentRoomId).collect { entity ->
+            val entity = startRepo.subscribeRoomEvent(currentRoomId)
                 _startGameEvent.value = StartGameModel(
                     duration = entity.duration,
                     chance = entity.chance,
                     questionNumber = entity.questionNumber,
                     players = _mutableRoomResponse.value!!,
                     roomId = entity.roomId)
-            }
         }
     }
 
     fun playGame() {
         viewModelScope.launch {
-            startRepo.sendStartGameEvent(StartGameRequest("ad0234829205b9033196ba818f7a872b", "7815696ecbf1c96e6894b779456d330e"))
+            startRepo.sendStartGameEvent(StartGameRequest(currentRoomId, userId))
         }
     }
 
