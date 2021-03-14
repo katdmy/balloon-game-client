@@ -8,6 +8,8 @@ import com.katdmy.android.balloon_game_client.domain.repository.game.IStartGameR
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.reactive.asFlow
 import okhttp3.*
 import ua.naiksoftware.stomp.Stomp
 import kotlin.coroutines.suspendCoroutine
@@ -23,19 +25,13 @@ class StartGameRepository(private val client: OkHttpClient) : IStartGameReposito
     }
 
 
-    override suspend fun subscribeRoomEvent(roomId: String): StatusGameEntity.StartGameEntity {
-
-        return suspendCoroutine {
-            stompClient.topic("/game/$roomId/start/events")
-                .subscribe({ topicMessage ->
-                    Log.d("ballon2", "start/events " + topicMessage.payload)
-                    val entity = Gson().fromJson(topicMessage.payload, StatusGameEntity.StartGameEntity::class.java)
-                    it.resumeWith(Result.success(entity))
-                }, {
-                    Log.e("ballon2", it.message, it)
-                    Result.failure<Throwable>(it)
-                })
-        }
+    override suspend fun subscribeRoomEvent(roomId: String): Flow<StatusGameEntity.StartGameEntity> {
+        return stompClient.topic("/game/$roomId/start/events")
+            .map {
+                Log.d("ballon2", "start/events " + it.payload)
+                Gson().fromJson(it.payload, StatusGameEntity.StartGameEntity::class.java)
+            }
+            .asFlow()
     }
 
     override suspend fun sendStartGameEvent(req: StartGameRequest) {

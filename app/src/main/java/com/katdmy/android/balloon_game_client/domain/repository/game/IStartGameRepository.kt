@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface IStartGameRepository {
 
-    suspend fun subscribeRoomEvent(roomId: String): StartGameEntity
+    suspend fun subscribeRoomEvent(roomId: String): Flow<StartGameEntity>
 
     suspend fun sendStartGameEvent(req: StartGameRequest);
 }
